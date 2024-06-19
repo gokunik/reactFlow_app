@@ -11,18 +11,33 @@ export const SubmitButton = () => {
       target: edge.target,
     }));
 
-    const response = await fetch("http://localhost:8000/pipelines/parse", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ nodes, edges }),
-    });
+    try {
+      const response = await fetch("http://localhost:8000/pipelines/parse", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ nodes, edges }),
+      });
 
-    const data = await response.json();
-    alert(
-      `Number of nodes: ${data.num_nodes}\nNumber of edges: ${data.num_edges}\nIs DAG: ${data.is_dag}`
-    );
+      const data = await response.json();
+
+      if (
+        response.ok &&
+        data.num_nodes !== undefined &&
+        data.num_edges !== undefined &&
+        data.is_dag !== undefined
+      ) {
+        alert(
+          `Number of nodes: ${data.num_nodes}\nNumber of edges: ${data.num_edges}\nIs DAG: ${data.is_dag}`
+        );
+      } else {
+        alert("Could not fetch the correct data from the server");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Something went wrong, check console for error");
+    }
   };
   return (
     <div className="fixed bottom-10 left-1/2 -translate-x-1/2">

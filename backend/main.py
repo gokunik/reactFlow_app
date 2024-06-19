@@ -1,8 +1,13 @@
+# to install all the dependencies run: pip install -r requirements.txt
+# to run the app run: uvicorn main:app --reload
+
 from fastapi import FastAPI, Form
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
 import networkx as nx
+
+
 
 app = FastAPI()
 
